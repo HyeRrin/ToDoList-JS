@@ -5,43 +5,52 @@ const $toDoList = document.getElementById("todo-list");
 let savedToDo = [];
 let preToDo = JSON.parse(localStorage.getItem("toDo"));
 
-// localStoarge에 toDo 저장
 function saveToDo() {
-  savedToDo.push($toDoInput.value);
-  $toDoInput.value = "";
   localStorage.setItem("toDo", JSON.stringify(savedToDo));
 }
 
-// 이전 toDo가 있다면 불러오기
-if (preToDo !== null) {
-  // localStorage에 추가
-  for (let i = 0; i < preToDo.length; i++) {
-    savedToDo.push(preToDo[i]);
-  }
-  // 화면 추가
-  for (let i = 0; i < savedToDo.length; i++) {
-    let li = document.createElement("li");
-    let div = document.createElement("div");
-    let btn = document.createElement("button");
-    div.innerText = savedToDo[i];
-    btn.innerText = "삭제";
-    li.appendChild(div);
-    li.appendChild(btn);
-    $toDoList.appendChild(li);
-  }
+function deleteList(event) {
+  const removeLi = event.target.parentElement;
+  removeLi.remove();
+  console.log(removeLi.id);
+  savedToDo = savedToDo.filter(
+    (savedToDo) => savedToDo.id !== parseInt(removeLi.id)
+  );
+  saveToDo();
 }
 
-// form을 submit 시 발생되는 함수
-function makeList(event) {
-  event.preventDefault();
-  let li = document.createElement("li");
-  let div = document.createElement("div");
-  let btn = document.createElement("button");
-  div.innerText = $toDoInput.value;
+function paintToDo(newToDo) {
+  const li = document.createElement("li");
+  li.id = newToDo.id;
+  const div = document.createElement("div");
+  div.innerText = newToDo.toDo;
+  const btn = document.createElement("button");
   btn.innerText = "삭제";
+  btn.addEventListener("click", deleteList);
   li.appendChild(div);
   li.appendChild(btn);
   $toDoList.appendChild(li);
+}
+
+function btnSubmit(event) {
+  event.preventDefault();
+  const newToDo = $toDoInput.value;
+  $toDoInput.value = "";
+  const newToDoObject = {
+    toDo: newToDo,
+    id: new Date().getTime(),
+  };
+  savedToDo.push(newToDoObject);
+  paintToDo(newToDoObject);
   saveToDo();
 }
-$toDoForm.addEventListener("submit", makeList);
+$toDoForm.addEventListener("submit", btnSubmit);
+
+if (preToDo !== null) {
+  for (let i = 0; i < preToDo.length; i++) {
+    savedToDo.push(preToDo[i]);
+  }
+  for (let i = 0; i < savedToDo.length; i++) {
+    paintToDo(savedToDo[i]);
+  }
+}
