@@ -12,7 +12,6 @@ function saveToDo() {
 function deleteList(event) {
   const removeLi = event.target.parentElement;
   removeLi.remove();
-  console.log(removeLi.id);
   savedToDo = savedToDo.filter(
     (savedToDo) => savedToDo.id !== parseInt(removeLi.id)
   );
@@ -26,9 +25,11 @@ function paintToDo(newToDo) {
   div.innerText = newToDo.toDo;
   const btn = document.createElement("button");
   btn.innerText = "삭제";
+  btn.className = "btn-delete";
   btn.addEventListener("click", deleteList);
   li.appendChild(div);
   li.appendChild(btn);
+  li.className = "toDos";
   $toDoList.appendChild(li);
 }
 

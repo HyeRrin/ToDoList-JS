@@ -9,18 +9,15 @@
     <link rel="stylesheet" href="/style/style.css" />
   </head>
   <body>
-    <h1>오늘 할 일</h1>
-    <form id="todo-form">
-      <input
-        required
-        maxlength="15"
-        type="text"
-        placeholder="내용을 입력해주세요."
-      />
-      <button>완료</button>
-    </form>
-    <ul id="todo-list"></ul>
-    <footer>
+    <main>
+      <h1>오늘 할 일</h1>
+      <form id="todo-form">
+        <input required type="text" placeholder="할 일을 추가해주세요." />
+        <button class="btn-save">저장</button>
+      </form>
+      <ul id="todo-list"></ul>
+    </main>
+    <footer id="footer">
       <p>00시 00분 00초</p>
       <p>날씨</p>
     </footer>
